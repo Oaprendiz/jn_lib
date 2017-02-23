@@ -5,7 +5,7 @@ DATA aItems				   INIT {}
 METHOD New( ... )
 METHOD Len( )			   INLINE LEN(::aItems)
 METHOD Plus( xArg ) 	   OPERATOR "+"
-METHOD Array( xArg ) 	OPERATOR "[]"
+METHOD Array( xArg ) 		OPERATOR "[]"
 METHOD X( xArg ) SETGET
 METHOD Y( xArg ) SETGET
 METHOD Z( xArg ) SETGET
@@ -17,7 +17,6 @@ METHOD New( ... ) CLASS Vec
 LOCAL n, nLen, aItems
 aItems := HB_AParams()
 nLen := LEN(aItems)
-altd()
 IF nLen == 0
    ::aItems := { 0, 0, 0, 0 }
 ELSE
@@ -29,6 +28,8 @@ ELSE
             ::aItems[n] := 0
          ENDIF
       NEXT
+   ELSEIF nLen == 1 .and. HB_ISOBJECT(aItems[1]) .and. aItems[1]:className() = "VEC"
+      ::aItems := ACLONE(aItems[1]:aItems)
    ELSEIF HB_ISARRAY(aItems)
       ::aItems := ACLONE(aItems)
       nLen := LEN(::aItems)
@@ -38,7 +39,7 @@ ELSE
          ENDIF
       NEXT
    ELSE
-      Eval( ErrorBlock(), GenError( HB_AParams(), "JN_LIB-VEC" ) )
+      Eval( ErrorBlock(), GenError( HB_AParams(), "JN_LIB-VEC", ) )
    ENDIF
 ENDIF
 RETURN Self

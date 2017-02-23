@@ -1,13 +1,13 @@
 #include "error.ch"
 
-FUNCTION GenError( xArg, cSubSystem )
+FUNCTION GenError( xArg, cSubSystem, nCode )
 LOCAL oError := ErrorNew()
+
 oError:Args := { xArg }
-oError:Description   := hb_langErrMsg( EG_DATATYPE )
-//oError:GenCode := EG_DATATYPE
+oError:Description   := hb_langErrMsg( nCode )
+oError:GenCode 		:= nCode
 oError:Operation     := ProcName( 1 )
 //oError:Operation     := "+"   //cOperator
-oError:GenCode       := EG_ARG
 oError:Severity      := ES_ERROR
 oError:CanSubstitute := .T.
 oError:CanDefault    := .F.
