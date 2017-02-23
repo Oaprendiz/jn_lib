@@ -18,6 +18,9 @@ A := Vec():New(1, 2, 3)
 ? a:toString( 2, 0 )
 B := Vec():New("1", "2", "3")
 ? b:toString( 2, 0 )
+c := vec():new(0)
+? c:Y
+
 
 ? b:g
 
