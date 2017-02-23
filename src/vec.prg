@@ -64,17 +64,13 @@ IF ::Len() > 0
       ::aItems[1] := xArg
    ENDIF
 ELSE
-   Eval( ErrorBlock(), GenError( xArg ) )
+   Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", nCode, nSubCode, cOperator ) )
 ENDIF
 RETURN ::aItems[1]
 
 METHOD Y( xArg ) CLASS Vec
-IF ::Len() > 1
-   IF xArg != Nil
-      ::aItems[2] := xArg
-   ENDIF
-ELSE
-   Eval( ErrorBlock(), GenError( xArg, ::ClassName() ) )
+IF xArg != Nil .and. ::Len() > 1
+	::aItems[2] := xArg
 ENDIF
 RETURN ::aItems[2]
 

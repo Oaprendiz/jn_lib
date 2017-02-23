@@ -1,19 +1,22 @@
 #include "error.ch"
+#include "common.ch"
 
-FUNCTION GenError( xArg, cSubSystem, nCode )
+FUNCTION GenError( xArg, cSubSystem, nCode, nSubCode, cOperator )
 LOCAL oError := ErrorNew()
+DEFAULT nCode TO 0
+DEFAULT nSubCode TO 9999
+DEFAULT cOperator TO ProcName( 1 )
 
 oError:Args := { xArg }
 oError:Description   := hb_langErrMsg( nCode )
 oError:GenCode 		:= nCode
-oError:Operation     := ProcName( 1 )
-//oError:Operation     := "+"   //cOperator
+oError:Operation     := cOperator
 oError:Severity      := ES_ERROR
 oError:CanSubstitute := .T.
 oError:CanDefault    := .F.
 oError:CanRetry      := .F.
-oError:SubSystem     := "JN_LIB-" + cSubSystem
-oError:SubCode       := 1001
+oError:SubSystem     := cSubSystem
+oError:SubCode       := nSubCode
 RETURN oError
 
 /*
@@ -30,3 +33,5 @@ RETURN oError
       "--" => 1087, ;
       "^"  => 1088 }
 */
+
+
