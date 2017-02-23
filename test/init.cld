@@ -1,0 +1,8 @@
+Options Path C:\JORGE\TESTES\jn_lib\..\..\hb32\bin;C:\JORGE\TESTES\jn_lib\..\..\hb32\comp\mingw\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\Common Files\Sage\2070\;C:\Program Files\nodejs\;C:\marinasIDE;C:\Program Files\GtkSharp\2.12\bin;C:\Program Files\Windows Live\Shared;C:\Program Files\ATI Technologies\ATI.ACE\Core-Static;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\cmd;C:\Users\tmn\AppData\Roaming\npm
+Options Colors {"W+/BG","N/BG","R/BG","N+/BG","W+/B","GR+/B","W/B","N/W","R/W","N/BG","R/BG"}
+Monitor Static
+Monitor Public
+Monitor Local
+Monitor Private
+Monitor Global
+View CallStack

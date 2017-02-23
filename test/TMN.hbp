@@ -58,6 +58,7 @@ teste.prg
 # prg(s) adicional(is)
 #
 ..\src\misc
+..\src\vec
 
 #
 # Fontes em linguagem c

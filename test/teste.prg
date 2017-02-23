@@ -13,11 +13,13 @@ Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
 hb_cdpSelect( "UTF8" )
 SetMode( 40, 100 )
 
-Eval( ErrorBlock(), GenError( "X", "TESTE VEC" ) )
-
+//Eval( ErrorBlock(), GenError( "X", "TESTE VEC" ) )
+A := Vec():New(1, 2, 3)
+? a:toString( 2, 0 )
+B := Vec():New("1", "2", "3")
+? b:toString( 2, 0 )
 
 /*
-A := Vec():New(1, 2, 3)
 B := Vec():New(3, 2, 1)
 
 hwg_writelog( a:toString( 2, 0 ))
