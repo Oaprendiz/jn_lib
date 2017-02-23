@@ -69,8 +69,12 @@ ENDIF
 RETURN ::aItems[1]
 
 METHOD Y( xArg ) CLASS Vec
-IF xArg != Nil .and. ::Len() > 1
-	::aItems[2] := xArg
+IF ::Len() > 1
+   IF xArg != Nil
+      ::aItems[2] := xArg
+   ENDIF
+ELSE
+   Eval( ErrorBlock(), GenError( xArg, ::ClassName() ) )
 ENDIF
 RETURN ::aItems[2]
 
