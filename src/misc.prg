@@ -12,7 +12,7 @@ oError:Severity      := ES_ERROR
 oError:CanSubstitute := .T.
 oError:CanDefault    := .F.
 oError:CanRetry      := .F.
-oError:SubSystem     := "JN_LIB"      //cSubSystem
+oError:SubSystem     := "JN_LIB-" + cSubSystem
 oError:SubCode       := 1001
 RETURN oError
 
