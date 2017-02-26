@@ -9,13 +9,40 @@ http://harbour.edu.pl/clipper/pt/ng21f19.html
 //#include "hbclass.ch"
 
 function main()
+LOCAL A, B, C, D, E, F, G
 
 Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
 hb_cdpSelect( "UTF8" )
 SetMode( 40, 100 )
 
 //Eval( ErrorBlock(), GenError( "X", "TESTE VEC" ) )
-A := Vec():New(1, 2, 3)
+A := Vec():New()
+B := Vec():New(1,1,1,1,1)
+C := Vec():New({2,2,2,2})
+D := Vec():New(C)
+//? C:__OPARRAYINDEX()
+//? C[10]
+//? c[-10]
+? 1, c[-1]
+? 2, a[1] := 3
+? 3, (a[1] := {4,4,4,4})
+? 4, a[1]
+? 5, (a[1] := c)
+? 6, (a[1] := B)
+//? 7, a[1] := "B"
+
+? 8, c[1] := 5
+? 9, c:x
+altd()
+
+? 10, C:X := 10
+
+
+inkey(0)
+
+E := vec():New("x")
+
+
 ? a:toString( 2, 0 )
 altd()
 abs("X")

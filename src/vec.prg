@@ -25,7 +25,7 @@ IF nLen == 0
 ELSE
    IF nLen == 1 .and. HB_ISARRAY(aItems[1])
       ::aItems := ACLONE(aItems[1])
-      nLen := LEN(::aItems)
+      nLen := ::Len()
       FOR n := 1 TO nLen
          IF !HB_ISNUMERIC( ::aItems[n] )
             Eval( ErrorBlock(), GenError( HB_AParams(), "JN_LIB-VEC", EG_DATATYPE, , "NEW") )
@@ -35,7 +35,7 @@ ELSE
       ::aItems := ACLONE(aItems[1]:aItems)
    ELSEIF HB_ISARRAY(aItems)
       ::aItems := ACLONE(aItems)
-      nLen := LEN(::aItems)
+      nLen := ::Len()
       FOR n := 1 TO nLen
          IF !HB_ISNUMERIC( ::aItems[n] )
             Eval( ErrorBlock(), GenError( HB_AParams(), "JN_LIB-VEC", EG_DATATYPE, , "NEW") )
@@ -51,6 +51,49 @@ METHOD Plus( xArg ) CLASS Vec
 RETURN xArg
 
 METHOD Array( nPos, xArg ) CLASS Vec
+LOCAL nLen := LEN(HB_AParams())
+IF nLen == 0
+   Eval( ErrorBlock(), GenError( nLen, "JN_LIB-VEC", EG_BOUND, 1067, "INDEX") )
+ELSE
+   IF nLen == 1      //    ARRACCESS
+      IF nPos > ::Len()
+         Eval( ErrorBlock(), GenError( nPos, "JN_LIB-VEC", EG_ARRACCESS, 1068, "INDEX") )
+      ELSEIF nPos < 0 .and. nPos + ::Len() <= 0
+         Eval( ErrorBlock(), GenError( nPos, "JN_LIB-VEC", EG_ARRACCESS, 1068, "INDEX") )
+      ELSEIF nPos < 0
+         nPos += ::Len()
+      ENDIF
+   ELSE              //    ARRASSIGN
+      IF nPos > ::Len()
+         Eval( ErrorBlock(), GenError( nPos, "JN_LIB-VEC", EG_ARRASSIGN, 1069, "INDEX") )
+      ELSEIF nPos <= 0 .and. nPos + ::Len() <= 0
+         Eval( ErrorBlock(), GenError( nPos, "JN_LIB-VEC", EG_ARRASSIGN, 1069, "INDEX") )
+      ELSEIF nPos < 0
+         nPos += ::Len()
+      ENDIF
+      IF HB_ISNUMERIC( xArg )
+         ::aItems[nPos] := xArg
+      ELSEIF HB_ISARRAY(xArg)
+         IF nPos >= LEN(xArg)
+            Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "INDEX") )
+         ELSEIF HB_ISNUMERIC(xArg[nPos])
+            ::aItems[nPos] := xArg[nPos]
+         ELSE
+            Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "INDEX") )
+         ENDIF
+      ELSEIF HB_ISOBJECT(xArg) .and. xArg:className() = "VEC"
+         IF nPos >= xArg:Len()
+            Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "INDEX") )
+         ELSEIF HB_ISNUMERIC(xArg:aItems[nPos])
+            ::aItems[nPos] := xArg:aItems[nPos]
+         ELSE
+            Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "INDEX") )
+         ENDIF
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "INDEX") )
+      ENDIF
+   ENDIF
+ENDIF
 RETURN ::aItems[nPos]
 
 METHOD toString( nLen, nDec ) CLASS Vec
@@ -62,30 +105,106 @@ ENDIF
 RETURN cStr + " )"
 
 METHOD X( xArg ) CLASS Vec
-IF ::Len() > 0
-   IF xArg != Nil
+IF ::Len() >= 1 .AND. LEN(HB_AParams()) > 0
+   IF HB_ISNUMERIC( xArg )
       ::aItems[1] := xArg
+   ELSEIF HB_ISARRAY(xArg)
+      IF LEN(xArg) < 1
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "X") )
+      ELSEIF HB_ISNUMERIC(xArg[1])
+         ::aItems[1] := xArg[1]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "X") )
+      ENDIF
+   ELSEIF HB_ISOBJECT(xArg) .and. xArg:className() = "VEC"
+      IF xArg:Len() < 1
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "X") )
+      ELSEIF HB_ISNUMERIC(xArg:aItems[1])
+         ::aItems[1] := xArg:aItems[1]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "X") )
+      ENDIF
+   ELSE
+      Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "X") )
    ENDIF
-ELSE
-   Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", nCode, nSubCode, cOperator ) )
 ENDIF
 RETURN ::aItems[1]
 
 METHOD Y( xArg ) CLASS Vec
-IF xArg != Nil .and. ::Len() > 1
-	::aItems[2] := xArg
+IF ::Len() >= 2 .AND. LEN(HB_AParams()) > 0
+   IF HB_ISNUMERIC( xArg )
+      ::aItems[2] := xArg
+   ELSEIF HB_ISARRAY(xArg)
+      IF LEN(xArg) < 2
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Y") )
+      ELSEIF HB_ISNUMERIC(xArg[2])
+         ::aItems[2] := xArg[2]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Y") )
+      ENDIF
+   ELSEIF HB_ISOBJECT(xArg) .and. xArg:className() = "VEC"
+      IF xArg:Len() < 2
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Y") )
+      ELSEIF HB_ISNUMERIC(xArg:aItems[2])
+         ::aItems[2] := xArg:aItems[2]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Y") )
+      ENDIF
+   ELSE
+      Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Y") )
+   ENDIF
 ENDIF
 RETURN ::aItems[2]
 
 METHOD Z( xArg ) CLASS Vec
-IF xArg != Nil .and. ::Len() > 2
-	::aItems[3] := xArg
+IF ::Len() >= 3 .AND. LEN(HB_AParams()) > 0
+   IF HB_ISNUMERIC( xArg )
+      ::aItems[3] := xArg
+   ELSEIF HB_ISARRAY(xArg)
+      IF LEN(xArg) < 3
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Z") )
+      ELSEIF HB_ISNUMERIC(xArg[3])
+         ::aItems[3] := xArg[3]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Z") )
+      ENDIF
+   ELSEIF HB_ISOBJECT(xArg) .and. xArg:className() = "VEC"
+      IF xArg:Len() < 3
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Z") )
+      ELSEIF HB_ISNUMERIC(xArg:aItems[3])
+         ::aItems[3] := xArg:aItems[3]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Z") )
+      ENDIF
+   ELSE
+      Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "Z") )
+   ENDIF
 ENDIF
 RETURN ::aItems[3]
 
 METHOD W( xArg ) CLASS Vec
-IF xArg != Nil .and. ::Len() > 3
-	::aItems[4] := xArg
+IF ::Len() >= 4 .AND. LEN(HB_AParams()) > 0
+   IF HB_ISNUMERIC( xArg )
+      ::aItems[4] := xArg
+   ELSEIF HB_ISARRAY(xArg)
+      IF LEN(xArg) < 4
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "W") )
+      ELSEIF HB_ISNUMERIC(xArg[4])
+         ::aItems[4] := xArg[4]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "W") )
+      ENDIF
+   ELSEIF HB_ISOBJECT(xArg) .and. xArg:className() = "VEC"
+      IF xArg:Len() < 4
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "W") )
+      ELSEIF HB_ISNUMERIC(xArg:aItems[4])
+         ::aItems[4] := xArg:aItems[4]
+      ELSE
+         Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "W") )
+      ENDIF
+   ELSE
+      Eval( ErrorBlock(), GenError( xArg, "JN_LIB-VEC", EG_DATATYPE, , "W") )
+   ENDIF
 ENDIF
 RETURN ::aItems[4]
 
