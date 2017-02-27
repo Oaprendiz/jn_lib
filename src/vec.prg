@@ -6,7 +6,7 @@ DATA aItems				   INIT {}
 METHOD New( ... )
 METHOD Len( )			   INLINE LEN(::aItems)
 METHOD Plus( xArg ) 	   OPERATOR "+"
-METHOD Array( xArg ) 		OPERATOR "[]"
+METHOD Array( xArg ) 	OPERATOR "[]"
 METHOD X( xArg ) SETGET
 METHOD Y( xArg ) SETGET
 METHOD Z( xArg ) SETGET
@@ -48,6 +48,7 @@ ENDIF
 RETURN Self
 
 METHOD Plus( xArg ) CLASS Vec
+
 RETURN xArg
 
 METHOD Array( nPos, xArg ) CLASS Vec
@@ -208,21 +209,6 @@ IF ::Len() >= 4 .AND. LEN(HB_AParams()) > 0
 ENDIF
 RETURN ::aItems[4]
 
-/*
-METHOD normalize( xArg ) CLASS Money
-LOCAL nValue
-IF IsPoint( xArg )
-   nValue := xArg
-ELSEIF HB_ISARRAY( xArg )
-   nValue := xArg
-ELSE
-   nValue := Eval( ErrorBlock(), GenError( xArg ) )
-ENDIF
-RETURN nValue
-
-STATIC FUNCTION IsPoint( xArg )
-RETURN HB_ISOBJECT( xArg ) .AND. xArg:className() = "POINT"
-*/
 
 /*
 METHOD WvgActiveXControl:OnError()

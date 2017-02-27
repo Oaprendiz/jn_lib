@@ -4,7 +4,7 @@
 FUNCTION GenError( xArg, cSubSystem, nCode, nSubCode, cOperator )
 LOCAL oError := ErrorNew()
 DEFAULT nCode TO 0
-DEFAULT nSubCode TO 9999
+DEFAULT nSubCode TO 0
 DEFAULT cOperator TO ProcName( 1 )
 
 oError:Args := { xArg }
